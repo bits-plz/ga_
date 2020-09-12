@@ -8,6 +8,7 @@ This app uses tkinter for gui and matplotlib for plotting the cost vs generation
 * fuzzywuzzy
 * matplotlib
 * tkinter
+* simple-eval
 
 ## tweaks
   * for example the mutation rate ("mu") is in between 0 and 1 and by default is 0.1
