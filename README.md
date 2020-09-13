@@ -66,7 +66,7 @@ As we can see that in the first program fitness of a child is calculated by fuzz
 
 The above steps are used to perform the crossover in selected parents, in the first one what we do is we split the parent strings and then perform the corresponding operation.In the later case it is not that obvious here we first make deepcopies , in fact in the second program in order to separate entities we have to perform deepcopies .The value of alfa is determining where exactly to perform the crossover.It’s actually a ndarray of values as np.random.uniform(a1,a2,s) returns a list of size -> “s”.
 It can also return a scalar if size is 1. More importantly it follows uniform distribution.Then the next steps simply perform crossover as suppose value of 1st  variable is 10 and  2nd is 15 and suppose alpha for this comes out to be 0.8 (say) then the new child member generated is 
-0.8*10+0.2*15=11 and second child is 0.8*15+0.2*10=14
+0.8* 10+0.2* 15=11 and second child is 0.8* 15+0.2* 10=14
 simply and this is performed as many times as the corresponding child vars.
 
 ## Mutation steps
@@ -79,9 +79,9 @@ simply and this is performed as many times as the corresponding child vars.
 
 2.
     y = x.deepcopy()
-    flag = np.random.rand(*x.position.shape) <= mu
+    flag = np.random.rand(* x.position.shape) <= mu
     ind = np.argwhere(flag)
-    y.position[ind] += sigma * np.random.randn(*ind.shape)
+    y.position[ind] += sigma * np.random.randn(* ind.shape)
 
 Now let us analyse the mutation steps, this step plays important role in further improving the quality of children or it may be not doing so anyways it will be handled in the selection steps because mutation although necessary might not always lead to further improvement.
 The first program uses again the random choice for selecting a random letter in between the string. Suppose string is “harsypotter” suppose idx is 3 therefore if say it also happens that random.uniform(0,1) returned in val>0.1 but this time it satisfied the condition therefore the next steps must be performed therefore operation is “har”+”r”+”ypotter”( the random choice may result in returning “r”) which results in the string being “harrypotter”.
@@ -94,7 +94,7 @@ And this mutant is returned.
 Selection Steps.
 1.
     agents = sorted(agents, key=lambda agent: agent.fitness, reverse=True)
-     agents = agents[:int(0.2 * len(agents))]
+     agents = agents[:int(0.2 * len(agents))]           (first 20%)
 
 
 2.
