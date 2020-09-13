@@ -31,7 +31,7 @@ This app uses tkinter for gui and matplotlib for plotting the cost vs generation
 The very idea behind the genetic algorithms are that we will look for the solution in entire search space but efficiently and the stress should be on how we will be improving the children solutions as the time passes.
 We shall discuss the steps one by one for both the programs included in the application.
 First step is obvious that we will generate random parents in the search space, the following two lines demonstrate the generation of the parents in ga_.py and ga.py .
-
+## init population
 1.
 ```
 self.string = ''.join(random.choice(string.ascii_letters) for _ in range(length))
@@ -45,7 +45,7 @@ self.string = ''.join(random.choice(string.ascii_letters) for _ in range(l
 The above generate the parents in thier respective programs, let us discuss both of them, the first one is used in ga_.py and is using the random choice function which selects the alphabets according to given list. The second one generates “nvar” values in range of their corresponding bounds i.e [varmin,varmax]
 The very next step is to determine what is their corresponding fitness status.
 In string matching we just compare the string and determine how good is this string in comparison to the target string.
-## init
+## costfunction
 
 1.
 ```
