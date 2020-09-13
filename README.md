@@ -1,7 +1,7 @@
 # ga_
 simple GUI implementing genetic algorithms
->The algo is taken from youtube channel "yarpiz"
-This app uses tkinter for gui and matplotlib for plotting the cost vs generation curve
+
+>This app uses tkinter for gui and matplotlib for plotting the cost vs generation curve
 
 ## Modules
 * ypstruct
