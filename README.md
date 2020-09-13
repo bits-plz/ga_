@@ -83,17 +83,21 @@ simply and this is performed as many times as the corresponding child vars.
 
 ## Mutation steps
 
-1.```
-    for agent in agents:
+1.
+```
+    for agent in agents:
         for idx, param in enumerate(agent.string):
             if random.uniform(0.0, 1.0) <= 0.1:
                 agent.string = agent.string[0:idx] + random.choice(string.ascii_letters) + agent.string[idx + 1:in_str_len]
+                
   ```
-2.```
+2.
+```
     y = x.deepcopy()
     flag = np.random.rand(* x.position.shape) <= mu
     ind = np.argwhere(flag)
     y.position[ind] += sigma * np.random.randn(* ind.shape)
+    
  ```
 Now let us analyse the mutation steps, this step plays important role in further improving the quality of children or it may be not doing so anyways it will be handled in the selection steps because mutation although necessary might not always lead to further improvement.
 The first program uses again the random choice for selecting a random letter in between the string. Suppose string is “harsypotter” suppose idx is 3 therefore if say it also happens that random.uniform(0,1) returned in val>0.1 but this time it satisfied the condition therefore the next steps must be performed therefore operation is “har”+”r”+”ypotter”( the random choice may result in returning “r”) which results in the string being “harrypotter”.
