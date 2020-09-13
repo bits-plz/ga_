@@ -96,6 +96,9 @@ def run_ga(problem, params):
     out.pop = pop
     out.bestsol = best_sol
     out.bestcost = bestcost
+    out_file=open("Results/math/res.txt","wt")
+    out_file.write(f"best soln {best_sol} ,best cost = {bestcost}")
+    out_file.close()
     #print (f"best soln {best_sol} ,best cost = {bestcost}")
     return out
 
