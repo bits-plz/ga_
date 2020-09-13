@@ -8,7 +8,15 @@ from tkinter import messagebox
 from time import sleep
 from PIL import ImageTk,Image
 import matplotlib.pyplot as plt
-import threading
+
+
+dirpath="Results"
+if not os.path.isdir(dirpath):
+    print("creating the directories")
+    os.mkdir(dirpath)
+    os.chdir("Results")
+    os.mkdir("string")
+    os.mkdir("math")
 
 
 
