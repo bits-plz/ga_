@@ -19,6 +19,7 @@ class Agent:
 
 
 Fitness = []
+string_file=""
 
 
 def gastr(in_str,in_str_len,population,generations,k):
@@ -33,6 +34,9 @@ def gastr(in_str,in_str_len,population,generations,k):
             plt.plot(range(len(Fitness)), Fitness)
             plt.show()
             print('Threshold met')
+            st=open("Results/string/res.txt","wt")
+            st.write(string_file)
+            st.close()
             break
 
 
@@ -53,6 +57,8 @@ def selection(agents):
     Fitness.append(math.sqrt(np.mean(np.square(fp))))
     agents = sorted(agents, key=lambda agent: agent.fitness, reverse=True)
     agents = agents[:int(0.2 * len(agents))]
+    for item in agents:
+        string_file+=str(item)+"\n"
     return agents
 
 
