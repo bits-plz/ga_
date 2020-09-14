@@ -8,7 +8,7 @@ from tkinter import messagebox
 from time import sleep
 from PIL import ImageTk,Image
 import matplotlib.pyplot as plt
-
+import os
 
 dirpath="Results"
 if not os.path.isdir(dirpath):
@@ -17,7 +17,6 @@ if not os.path.isdir(dirpath):
     os.chdir("Results")
     os.mkdir("string")
     os.mkdir("math")
-
 
 
 def loader():
@@ -52,13 +51,15 @@ x_=int((screen_w/2)-win_w/2)
 y_=int((screen_h/2)-win_h/2)
 root.geometry("{}x{}+{}+{}".format(win_w, win_h, x_, y_))
 _ga=ttk.Notebook(root)
-_ga.pack(pady=15)
+_ga.pack(pady=10)
 s_ga=Frame(_ga,width=900,height=400)
 m_ga=Frame(_ga,width=900,height=700,bg="blue")
+h_ga=Frame(_ga,width=900,height=700)
+about_ga=Frame(_ga,width=900,height=700)
 
 
 #string ga
-labelS = Label(s_ga, text="Enter Test String", width=30,font=font.Font(family='Helvetica', size=12, weight='bold')).grid(row=0, column=0, padx=10, pady=10)
+labelS = Label(s_ga, text="Enter Target String", width=30,font=font.Font(family='Helvetica', size=12, weight='bold')).grid(row=0, column=0, padx=10, pady=10)
 popu_ = Label(s_ga, text="Enter the population Size", width=30,font=font.Font(family='Helvetica', size=12, weight='bold')).grid(row=1, column=0, padx=10, pady=10)
 gen_ = Label(s_ga, text="Enter number of generations",width=30,font=font.Font(family='Helvetica', size=12, weight='bold')).grid(row=2, column=0, padx=10, pady=10)
 k_ = Label(s_ga, text="Enter the fitness criteria",width=30,font=font.Font(family='Helvetica', size=12, weight='bold')).grid(row=3, column=0, padx=10, pady=10)
@@ -79,7 +80,9 @@ def begin_ga():
         population = int(String_popy.get())
         generations = int(String_gen.get())
         k = int(String_k.get())
-        gastr(in_str,in_str_len,population,generations,k)
+        sp=gastr(in_str,in_str_len,population,generations,k)
+        if sp=="threshold couldn't be reached":
+            messagebox.showwarning("Threshold unmet","threshold couldn't be reached try putting a lower value of it or try again")
     else:
         messagebox.showerror("param fill error","you must fill all the parameters")
 button = Button(s_ga, text="BEGIN", command=begin_ga)
@@ -103,7 +106,7 @@ def begin_mga():
             plt.xlim(0,int(m_param_max.get()))
             plt.xlabel('Generations')
             plt.ylabel('COST')
-            plt.title('Genetic algorithm')
+            plt.title('mga optimization')
             plt.grid(True)
             res=result.bestsol['cost']
             bs_sol.set(str(res))
@@ -181,12 +184,46 @@ st=Label(m_ga,text="Last offsprings",width=30,height=5,font=font.Font(family='He
 best_sol_pop=Label(m_ga,textvariable=sol,font=font.Font(family='Helvetica', size=10))
 best_sol_pop.grid(row=15, column=1, padx=10, pady=10)
 
+help_main="This is the help guide for using the application\n String ga :"
+help_str="\n 1.Enter the target string in it's respective entry\n 2.Enter the population[anything >0]\n 3.Enter the number of generations.\n 4.Enter the fitness index [a positive number less than 100,greater than 0]\n5.Run the string matching program by clicking on BEGIN button\n"
+help_mga_heading="Mathematical ga:\n"
+help_mga="All the entries are at right to their corresponding parameter names\n1.Enter the problem function\n2.Enter the number of variables\n3.Enter the lower bounds of the variable in comma separated fashion, likewise enter the upper bounds\n4.Enter the number of generations\n5.Enter the initial population\n6.Enter the type of optimization(`max`,`min`)[default is max]\n7.Run the program by clicking on BEGIN button\n If you wish to tweak the resulting graph, you need to enter all \n the parameters onto the right\n with following constraints,gamma,beta,pc,mu,sigma∈[0,1] \nwhich are defaulted to [0.1,1,1,0,1,0,1] respectively"
+help_errors="While there will be no errors in mga \n , sometimes it takes a lot of time because of huge calculations,\n so wait patiently.Also if you see any error message just follow the instruction in the box.\n In string ga it may happen that you will not be able to attain \n the threshold at one time but if you try running it again it might\n because of random algorithms involved"
+
+h_sga=Label(h_ga,text=help_str,width=80,font=font.Font(family='Consolas',size=10)).grid(row=2,column=1,padx=2)
+h_sga=Label(h_ga,text=help_main,width=80,font=font.Font(family='Consolas',size=20,weight='bold')).grid(row=1,column=1,padx=2)
+h_sga=Label(h_ga,text=help_mga_heading,width=80,font=font.Font(family='Consolas',size=20,weight='bold')).grid(row=3,column=1,padx=2)
+h_sga=Label(h_ga,text=help_mga,width=80,font=font.Font(family='Consolas',size=10)).grid(row=4,column=1,padx=2)
+h_sga=Label(h_ga,text="Errors",width=80,font=font.Font(family='Consolas',size=20,weight='bold')).grid(row=5,column=1,padx=2)
+h_sga=Label(h_ga,text=help_errors,width=80,font=font.Font(family='Consolas',size=10)).grid(row=6,column=1,padx=2)
+
+
+
+
+
+ab_ga=Label(about_ga,text="Uses tkinter,ypstruct,matplotlib,numpy,simple-eval,Pillow \n Thanks to yarpiz \n version 1.0.0",font=font.Font(family="Consolas",size=20,weight="bold"),width=80).grid(row=1,column=1,padx=2)
+ab_ga=Label(about_ga,text="Results stored in Results folder , string ga -> string ,mathematical ga-> math",font=font.Font(family="Consolas",size=12,weight="bold"),width=80).grid(row=2,column=1,padx=2)
+ab_ga=Label(about_ga,text="Made with   ❤️using python",font=font.Font(family="Consolas",size=10,weight="bold"),width=80).grid(row=4,column=1,padx=2)
+ab_ga=Label(about_ga,text="Github repo -> https://github.com/bits-plz/ga_ ",font=font.Font(family="Consolas",size=10,weight="bold"),width=80).grid(row=3,column=1,padx=2)
+
+
+
+
+
+
+
+
 #packing both frames
 
 s_ga.pack(fill=BOTH,expand=1)
 m_ga.pack(fill=BOTH,expand=1)
+h_ga.pack(fill=BOTH,expand=1)
+about_ga.pack(fill=BOTH,expand=1)
 _ga.add(s_ga,text="Strings")
 _ga.add(m_ga,text="Mathematical")
+_ga.add(h_ga,text="Help")
+_ga.add(about_ga,text="About")
+
 #the main loop
 root.mainloop()
 
