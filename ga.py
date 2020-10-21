@@ -18,6 +18,8 @@ def run_ga(problem, params):
     sigma = params.sigma
     beta = params.beta
     flag=params.optimization
+    selection_type=params.selection_type
+    xtype=params.x_type
     # empty individual template
     empty_ind = structure()
     empty_ind.position = None
@@ -40,13 +42,18 @@ def run_ga(problem, params):
             if(flag=="min"):
                 if (pop[i].cost < best_sol.cost):
                     best_sol = pop[i].deepcopy()
-            elif (flag=="max"):
+            else:
                 if(pop[i].cost>best_sol.cost):
                     best_sol=pop[i].deepcopy()
         except Exception as e:
             raise(e)
     # best cost
     bestcost = np.empty(maxit)
+    if selection_type=="Tournament"or selection_type=="Elitism":
+            if flag=="min":
+                pop = sorted(pop, key=lambda x: x.cost)
+            else:
+                pop=sorted(pop,key=lambda x:x.cost,reverse=True)
 
     # main loop
     for it in range(maxit):
@@ -57,13 +64,26 @@ def run_ga(problem, params):
             costs = costs / avg_cost
         probs = np.exp(-beta * costs)
         for _ in range(nc // 2):  # number of childrens we want
-            # q = np.random.permutation(maxit)
-            # p1 = pop[q[0]]
-            # p2 = pop[q[1]]
-            p1=pop[roullete(probs)]
-            p2=pop[roullete(probs)]
-            crossover
-            c1, c2 = crossover(p1, p2, gamma)
+            if(selection_type=="Random"):
+                q = np.random.permutation(npop)
+                p1 = pop[q[0]]
+                p2 = pop[q[1]]
+                p3 = pop[q[1]]
+            elif(selection_type=="Tournament"):
+                q_all=np.random.randint(0,npop)
+                p1=pop[0]
+                p2=pop[q_all]
+                p2=pop[np.random.randint(0,npop)]
+            elif selection_type=="Elitism":
+                p1=pop[np.random.randint(0,int(npop*0.1))]
+                p2=pop[np.random.randint(0,int(npop*0.1))]
+                p2=pop[np.random.randint(0,int(npop*0.1))]
+            else:
+                p1=pop[roullete(probs)]
+                p2=pop[roullete(probs)]
+                p3=pop[roullete(probs)]
+            #crossover
+            c1, c2 = crossover(p1, p2, p3,xtype,gamma)
             # mutation
             c1 = mutate(c1, mu, sigma)
             c2 = mutate(c2, mu, sigma)
@@ -83,12 +103,14 @@ def run_ga(problem, params):
                     best_sol = c1.deepcopy()
                 if c2.cost > best_sol.cost:
                     best_sol = c2.deepcopy()
-
             popc.append(c1)
             popc.append(c2)
 
         pop += popc
-        pop = sorted(pop, key=lambda x: x.cost)
+        if flag=="min":
+            pop = sorted(pop, key=lambda x: x.cost)
+        else:
+            pop=sorted(pop,key=lambda x:x.cost,reverse=True)
         pop = pop[0:maxit]
         bestcost[it] = best_sol.cost
 
@@ -99,17 +121,22 @@ def run_ga(problem, params):
     out_file=open("Results/math/res.txt","wt")
     out_file.write(f"best soln {best_sol} ,best cost = {bestcost}")
     out_file.close()
-    #print (f"best soln {best_sol} ,best cost = {bestcost}")
     return out
 
 
-def crossover(p1, p2, gamma=0.1):
-    c1 = p1.deepcopy()
-    c2 = p1.deepcopy()
-    alfa = np.random.uniform(-gamma, 1 + gamma, *c1.position.shape)
-    c1.position = alfa * p1.position + (1 - alfa) * p2.position
-    c2.positon = alfa * p2.position + (1 - alfa) * p2.position
-    return c1, c2
+def crossover(p1, p2,p3, xtype,gamma=0.1):
+    alfa = np.random.uniform(-gamma, 1 + gamma, *p1.position.shape)
+    c1=p1.deepcopy()
+    c2=p2.deepcopy()
+    if xtype=="hc/ic":
+        c1.position = alfa * p1.position + (1 - alfa) * p2.position
+        c2.positon = alfa * p2.position + (1 - alfa) * p2.position
+    if xtype=="Three parent":
+        c3=p3.deepcopy()
+        c1.position=(alfa/3)*p1.position+(alfa/3)*p2.position+(alfa/3)*p3.position
+        c2.position=(alfa/3)*p1.position+(alfa/3)*p2.position+(alfa/3)*p3.position
+    return c1,c2
+
 
 
 def mutate(x, mu, sigma):
