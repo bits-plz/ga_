@@ -107,7 +107,7 @@ y[0] = y[0]+0.1* 0.79193536                                            (say beca
 y[0] =  0.47193536
 And this mutant is returned.
 
-Selection Steps.
+## Selection Steps.
 1.
 ```
     agents = sorted(agents, key=lambda agent: agent.fitness, reverse=True)
